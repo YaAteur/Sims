@@ -2,17 +2,21 @@ import random
 
 
 class Human:
-    def __init__(self, name='Human', job=None, home=None, car=None):
+    def __init__(self, name='Human', job=None, home=None, car=None, computer=None):
         self.name = name
         self.job = job
         self.home = home
         self.car = car
+        self.computer = computer
         self.money = 100
         self.gladness = 50
         self.statiety = 50
 
     def get_home(self):
         self.home = House()
+
+    def get_computer(self):
+        self.computer = Computer()
 
     def get_car(self):
         self.car = Auto(brand_of_car)
@@ -73,12 +77,21 @@ class Human:
             self.money -= 15
 
     def chill(self):
-        self.gladness += 10
+        self.gladness += 15
         self.home.mess += 5
+
+    def games(self):
+        self.computer.mess += 10
+        self.computer.progress += 30
+        self.gladness += 5
 
     def clean_home(self):
         self.gladness -= 5
         self.home.mess = 0
+
+    def clean_computer(self):
+        self.gladness -= 5
+        self.computer.mess = 0
 
     def to_repair(self):
         self.car.strenght += 100
@@ -92,6 +105,10 @@ class Human:
         print(f'Money = {self.money}')
         print(f'Statiety = {self.statiety}')
         print(f'Gladness = {self.gladness}')
+        computer_indexes = 'Computer indexes'
+        print(f'{computer_indexes:^50}', '\n')
+        print(f'Game Progress = {self.computer.progress}')
+        print(f'Computer Mess = {self.computer.mess}')
         home_indexes = 'Home indexes'
         print(f'{home_indexes:^50}', '\n')
         print(f'Food = {self.home.food}')
@@ -100,6 +117,7 @@ class Human:
         print(f'{car_indexes:^50}', '\n')
         print(f'Fuel = {self.car.fuel}')
         print(f'Strenght = {self.car.strenght}')
+
 
     def is_alive(self):
         if self.gladness < 0:
@@ -124,9 +142,12 @@ class Human:
         if self.job == None:
             self.get_job()
             print(f"I do't have a job, I'm going to work as {self.job.job} salary {self.job.salary}")
+        if self.computer == None:
+            self.get_computer()
+            print('I will get a computer!')
         self.days_indexes(day)
 
-        dice = random.randint(1, 4)
+        dice = random.randint(1,5)
         if self.statiety < 20:
             print("I'll go eat")
             self.eat()
@@ -152,6 +173,9 @@ class Human:
         elif dice == 4:
             print("Time for treats!")
             self.shopping(manage="delicacies")
+        elif dice == 5:
+            print("Time for games")
+            self.games()
 
 
 class Auto:
@@ -182,6 +206,12 @@ class Job:
         self.job = random.choice(list(job_list))
         self.salary = job_list[self.job]['salary']
         self.gladness = job_list[self.job]['gladness_less']
+
+class Computer:
+    def __init__(self):
+        self.mess = 0
+        self.progress = 0
+
 
 
 brand_of_car = {'BMW': {'fuel': 100, 'strenght': 100, 'consumption': 6},
